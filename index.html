@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Centro de Materiais de Estudo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wireframe: {
+                            bg: '#f8fafc',
+                            card: '#ffffff',
+                            border: '#cbd5e1',
+                            darkborder: '#94a3b8',
+                            text: '#334155',
+                            muted: '#64748b',
+                            accent: '#475569',
+                            highlight: '#0ea5e9'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilo de wireframe/esboço */
+        .wf-border-dashed {
+            border-style: dashed;
+        }
+        .wf-img-placeholder {
+            background-color: #f1f5f9;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 10px 10px;
+        }
+    </style>
+</head>
+<body class="bg-slate-200 text-slate-800 font-sans min-h-screen flex items-center justify-center p-2 sm:p-6">
+
+    <!-- Contêiner simulando tela de Smartphone / App Mobile -->
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border-4 border-slate-400 overflow-hidden flex flex-col h-[850px] relative">
+        
+        <!-- BARRA DE STATUS SUPERIOR (Mockup Mobile) -->
+        <div class="bg-slate-100 border-b border-slate-300 px-5 py-2 flex justify-between items-center text-xs text-slate-500 font-mono select-none">
+            <span>09:41</span>
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-wifi"></i>
+                <i class="fa-solid fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- CABEÇALHO DO APLICATIVO -->
+        <header class="bg-slate-100 border-b-2 border-slate-300 p-4 sticky top-0 z-10">
+            <div class="flex items-center justify-between mb-3">
+                <button class="w-8 h-8 rounded-lg border border-slate-400 flex items-center justify-center text-slate-600 hover:bg-slate-200">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div class="text-center">
+                    <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Biologia • Módulo 3</span>
+                    <h1 class="text-lg font-bold text-slate-800 leading-tight">Aula de Genética</h1>
+                </div>
+                <button class="w-8 h-8 rounded-lg border border-slate-400 flex items-center justify-center text-slate-600 hover:bg-slate-200" title="Opções">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+            </div>
+
+            <!-- Barra de Busca Rápida -->
+            <div class="relative flex items-center gap-2">
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" onkeyup="filterMaterials()" placeholder="Buscar em Genética (ex: Mendel, DNA)..." 
+                        class="w-full pl-9 pr-3 py-1.5 bg-white text-sm border-2 border-slate-300 rounded-lg focus:outline-none focus:border-slate-500 text-slate-700 placeholder-slate-400">
+                </div>
+                <button id="viewToggleBtn" onclick="toggleView()" class="p-2 border-2 border-slate-300 rounded-lg text-slate-600 hover:bg-slate-200" title="Alternar Visualização">
+                    <i class="fa-solid fa-table-cells-large" id="viewIcon"></i>
+                </button>
+            </div>
+
+            <!-- Chips de Filtro por Tipo de Conteúdo -->
+            <div class="flex gap-1.5 mt-3 overflow-x-auto pb-1 text-xs no-scrollbar">
+                <button onclick="filterType('all')" class="filter-btn active-filter px-3 py-1 rounded-full border border-slate-400 bg-slate-800 text-white font-medium whitespace-nowrap">
+                    Todos (6)
+                </button>
+                <button onclick="filterType('pdf')" class="filter-btn px-3 py-1 rounded-full border border-slate-300 bg-white text-slate-600 hover:bg-slate-50 font-medium whitespace-nowrap flex items-center gap-1">
+                    <i class="fa-solid fa-file-pdf text-red-500"></i> PDFs
+                </button>
+                <button onclick="filterType('video')" class="filter-btn px-3 py-1 rounded-full border border-slate-300 bg-white text-slate-600 hover:bg-slate-50 font-medium whitespace-nowrap flex items-center gap-1">
+                    <i class="fa-solid fa-circle-play text-red-600"></i> Vídeos
+                </button>
+                <button onclick="filterType('photo')" class="filter-btn px-3 py-1 rounded-full border border-slate-300 bg-white text-slate-600 hover:bg-slate-50 font-medium whitespace-nowrap flex items-center gap-1">
+                    <i class="fa-solid fa-camera text-emerald-600"></i> Lousa
+                </button>
+                <button onclick="filterType('note')" class="filter-btn px-3 py-1 rounded-full border border-slate-300 bg-white text-slate-600 hover:bg-slate-50 font-medium whitespace-nowrap flex items-center gap-1">
+                    <i class="fa-solid fa-pen-to-square text-amber-600"></i> Anotações
+                </button>
+            </div>
+        </header>
+
+        <!-- ÁREA CENTRAL DE CONTEÚDO (Scrollable) -->
+        <main class="flex-1 overflow-y-auto p-4 bg-slate-50">
+            
+            <!-- Resumo do Progresso / Status do Tema -->
+            <div class="mb-4 p-3 border-2 border-dashed border-slate-300 rounded-xl bg-white flex items-center justify-between text-xs">
+                <div>
+                    <span class="font-bold text-slate-700 block">Progresso do Tópico</span>
+                    <span class="text-slate-500">4 de 6 materiais revisados</span>
+                </div>
+                <div class="w-16 bg-slate-200 rounded-full h-2 overflow-hidden border border-slate-300">
+                    <div class="bg-slate-700 h-full w-[66%]"></div>
+                </div>
+            </div>
+
+            <!-- CONTÊINER DOS CARTOES DE MATERIAIS -->
+            <div id="materialsContainer" class="grid grid-cols-1 gap-3">
+
+                <!-- 1. PDF DE AULA -->
+                <div class="material-card pdf-item bg-white border-2 border-slate-300 rounded-xl p-3 shadow-sm hover:border-slate-500 transition-all cursor-pointer" onclick="openModal('Apostila - 1ª Lei de Mendel.pdf', 'PDF de Aula', '12 Páginas • Atualizado ontem')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 border border-red-300 flex items-center justify-center text-red-600 font-bold shrink-0">
+                            <i class="fa-solid fa-file-pdf text-lg"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-red-50 text-red-700 border border-red-200">PDF de Aula</span>
+                                <span class="text-[11px] text-slate-400">2.4 MB</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-sm truncate">Apostila - 1ª Lei de Mendel</h3>
+                            <p class="text-xs text-slate-500 line-clamp-1 mt-0.5">Conceitos básicos, cruzamentos e heredogramas com exercícios resolvidas.</p>
+                        </div>
+                    </div>
+                    <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                        <span><i class="fa-solid fa-check-double text-emerald-500 mr-1"></i> Lida em 28/09</span>
+                        <i class="fa-solid fa-download"></i>
+                    </div>
+                </div>
+
+                <!-- 2. VÍDEO DO YOUTUBE -->
+                <div class="material-card video-item bg-white border-2 border-slate-300 rounded-xl p-3 shadow-sm hover:border-slate-500 transition-all cursor-pointer" onclick="openModal('Vídeo: Quadro de Punnett na Prática', 'Vídeo do YouTube', 'Duração: 14:20 • Canal Biologia Total')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-red-50 border border-red-200 flex items-center justify-center text-red-500 font-bold shrink-0">
+                            <i class="fa-solid fa-circle-play text-xl"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-red-50 text-red-700 border border-red-200">Vídeo YouTube</span>
+                                <span class="text-[11px] text-slate-400">14:20 min</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-sm truncate">Quadro de Punnett na Prática</h3>
+                            <p class="text-xs text-slate-500 line-clamp-1 mt-0.5">Resolução de problemas de probabilidade genética passo a passo.</p>
+                        </div>
+                    </div>
+                    <!-- Wireframe Thumbnail Placeholder -->
+                    <div class="mt-2.5 h-20 w-full wf-img-placeholder border border-slate-300 rounded-lg flex flex-col items-center justify-center text-slate-400 relative">
+                        <i class="fa-solid fa-play text-2xl text-slate-600"></i>
+                        <span class="text-[10px] font-mono mt-1 text-slate-500">[Miniatura do Vídeo]</span>
+                    </div>
+                    <div class="mt-2 pt-1 flex items-center justify-between text-[11px] text-slate-400">
+                        <span><i class="fa-solid fa-clock mr-1"></i> Assistir mais tarde</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </div>
+                </div>
+
+                <!-- 3. FOTO DA LOUSA -->
+                <div class="material-card photo-item bg-white border-2 border-slate-300 rounded-xl p-3 shadow-sm hover:border-slate-500 transition-all cursor-pointer" onclick="openModal('Foto da Lousa: Esquema de Codominância', 'Foto da Lousa', 'Capturada em 25/09 • Resolução Alta')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-700 font-bold shrink-0">
+                            <i class="fa-solid fa-camera text-lg"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">Foto da Lousa</span>
+                                <span class="text-[11px] text-slate-400">Foto 1/2</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-sm truncate">Esquema de Codominância vs D. Incompleta</h3>
+                            <p class="text-xs text-slate-500 line-clamp-1 mt-0.5">Anotações no quadro feitas pelo prof. Ricardo sobre Sangue ABO.</p>
+                        </div>
+                    </div>
+                    <!-- Wireframe Photo Placeholder -->
+                    <div class="mt-2.5 h-24 w-full wf-img-placeholder border border-slate-300 rounded-lg flex flex-col items-center justify-center text-slate-400">
+                        <i class="fa-solid fa-image text-2xl text-slate-400"></i>
+                        <span class="text-[10px] font-mono mt-1 text-slate-500">[Foto da Lousa - Módulo Sangue ABO]</span>
+                    </div>
+                    <div class="mt-2 pt-1 flex items-center justify-between text-[11px] text-slate-400">
+                        <span><i class="fa-solid fa-check-double text-emerald-500 mr-1"></i> Revisado</span>
+                        <i class="fa-solid fa-expand"></i>
+                    </div>
+                </div>
+
+                <!-- 4. ANOTAÇÕES PESSOAIS -->
+                <div class="material-card note-item bg-white border-2 border-slate-300 rounded-xl p-3 shadow-sm hover:border-slate-500 transition-all cursor-pointer" onclick="openModal('Minhas Anotações: Pegadinhas da FUVEST', 'Anotação Pessoal', 'Última edição: Há 2 horas')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 font-bold shrink-0">
+                            <i class="fa-solid fa-pen-to-square text-lg"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">Anotação Pessoal</span>
+                                <span class="text-[11px] text-slate-400">Texto</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-sm truncate">Pegadinhas FUVEST/UNICAMP</h3>
+                            <p class="text-xs text-slate-600 line-clamp-2 mt-1 italic bg-amber-50/50 p-2 rounded border border-amber-200/60 font-serif">
+                                "Atenção: Não confundir genótipo com fenótipo. Na dominância incompleta a proporção fenotípica é 1:2:1..."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                        <span><i class="fa-solid fa-tag text-slate-400 mr-1"></i> #dicas #vestibular</span>
+                        <i class="fa-solid fa-pen"></i>
+                    </div>
+                </div>
+
+                <!-- 5. OUTRO PDF (EXERCÍCIOS) -->
+                <div class="material-card pdf-item bg-white border-2 border-slate-300 rounded-xl p-3 shadow-sm hover:border-slate-500 transition-all cursor-pointer" onclick="openModal('Lista de Exercícios - Enem & Fuvest.pdf', 'PDF de Aula', '25 Questões com Gabarito Comentado')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 border border-red-300 flex items-center justify-center text-red-600 font-bold shrink-0">
+                            <i class="fa-solid fa-file-pdf text-lg"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-red-50 text-red-700 border border-red-200">PDF de Exercícios</span>
+                                <span class="text-[11px] text-slate-400">1.1 MB</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-sm truncate">Lista de Exercícios - Genética 2024</h3>
+                            <p class="text-xs text-slate-500 line-clamp-1 mt-0.5">25 questões selecionadas das últimas provas com gabarito.</p>
+                        </div>
+                    </div>
+                    <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                        <span class="text-amber-600 font-medium"><i class="fa-solid fa-circle-notch mr-1"></i> Em andamento (10/25)</span>
+                        <i class="fa-solid fa-download"></i>
+                    </div>
+                </div>
+
+                <!-- 6. OUTRA FOTO (LOUSA PARTE 2) -->
+                <div class="material-card photo-item bg-white border-2 border-slate-300 rounded-xl p-3 shadow-sm hover:border-slate-500 transition-all cursor-pointer" onclick="openModal('Foto da Lousa: Heredogramas Símbolos', 'Foto da Lousa', 'Capturada em 25/09')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-700 font-bold shrink-0">
+                            <i class="fa-solid fa-camera text-lg"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb
