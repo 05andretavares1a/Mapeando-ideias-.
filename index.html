@@ -4,59 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz: Validação de Protótipo do App de Estudos</title>
-    <!-- Tailwind CSS para estilização moderna e responsiva -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
+        
         .option-card {
-            transition: all 0.2s ease-in-out;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
         .option-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.35);
+        }
+
+        .red-glow-card {
+            box-shadow: 0 0 35px rgba(220, 38, 38, 0.25), inset 0 0 15px rgba(185, 28, 28, 0.15);
+        }
+
+        .red-glow-button {
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);
+        }
+
+        .red-glow-button:hover {
+            box-shadow: 0 0 35px rgba(239, 68, 68, 0.65);
+        }
+
+        /* Custom scrollbar com tema vermelho intenso */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #dc2626;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ef4444;
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between p-4 md:p-8">
+<body class="bg-gradient-to-br from-black via-zinc-950 to-red-950 text-white min-h-screen flex flex-col justify-between p-4 md:p-8 selection:bg-red-600 selection:text-white">
 
-    <!-- Header principal -->
-    <header class="max-w-3xl mx-auto w-full text-center my-6">
-        <div class="inline-block bg-indigo-500/10 text-indigo-400 text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-3 border border-indigo-500/20">
-            Teste de Usabilidade
+    <!-- Header principal com muito destaque em vermelho -->
+    <header class="max-w-3xl mx-auto w-full text-center my-6 relative">
+        <!-- Glows de fundo do header -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-24 bg-red-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="inline-flex items-center gap-2 bg-gradient-to-r from-red-900 via-red-600 to-red-900 text-white text-xs font-black uppercase tracking-widest px-4 py-2 rounded-full mb-4 border border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+            <span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
+            Validação de Usabilidade
         </div>
-        <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-            Quiz do Protótipo de Estudos
+
+        <h1 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-red-200 to-red-500 tracking-tight drop-shadow-md">
+            Quiz do Protótipo
         </h1>
-        <p class="text-slate-400 mt-2 text-sm md:text-base">
-            Avalie o entendimento das funcionalidades principais desenhadas para a nova tela.
+        <p class="text-red-200/80 mt-2 text-sm md:text-base font-medium max-w-lg mx-auto">
+            Teste os seus conhecimentos sobre a tela do aplicativo de estudos.
         </p>
     </header>
 
     <!-- Conteúdo principal do Quiz -->
-    <main class="max-w-2xl mx-auto w-full flex-grow flex flex-col justify-center">
-        <!-- Container onde as perguntas ou os resultados serão inseridos -->
-        <div id="quiz-card" class="bg-slate-800 border border-slate-700/80 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm relative overflow-hidden">
+    <main class="max-w-2xl mx-auto w-full flex-grow flex flex-col justify-center my-4 relative z-10">
+        <div id="quiz-card" class="bg-gradient-to-b from-zinc-950 via-red-950/40 to-zinc-950 border-2 border-red-600/60 rounded-3xl p-6 md:p-8 red-glow-card relative overflow-hidden backdrop-blur-md">
             
-            <!-- Barra de Progresso superior -->
-            <div id="progress-bar-container" class="w-full bg-slate-700/50 rounded-full h-2.5 mb-6 overflow-hidden">
-                <div id="progress-bar" class="bg-indigo-500 h-2.5 rounded-full transition-all duration-300 w-0"></div>
+            <!-- Luzes decorativas laterais -->
+            <div class="absolute -top-20 -right-20 w-56 h-56 bg-red-600/30 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-20 -left-20 w-56 h-56 bg-red-700/25 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- Topo do Card: Barra de Progresso com Vermelho Vibrante -->
+            <div class="flex items-center justify-between text-xs font-black tracking-widest text-red-400 uppercase mb-3">
+                <span id="question-tracker">PERGUNTA 1 DE 5</span>
+                <span id="progress-percent" class="text-red-300">20%</span>
             </div>
 
-            <!-- Área dinâmica para renderização da pergunta -->
-            <div id="quiz-content">
-                <!-- Conteúdo gerado via JS -->
+            <div id="progress-bar-container" class="w-full bg-zinc-900/90 rounded-full h-3 mb-8 overflow-hidden border border-red-900/60 p-0.5 shadow-inner">
+                <div id="progress-bar" class="bg-gradient-to-r from-red-800 via-red-600 to-red-500 h-full rounded-full transition-all duration-500 shadow-[0_0_15px_rgba(239,68,68,0.8)] w-0"></div>
+            </div>
+
+            <!-- Área onde o conteúdo dinâmico (Pergunta ou Resultado) é injetado -->
+            <div id="quiz-content" class="relative z-10">
+                <!-- Injetado via JavaScript -->
             </div>
         </div>
     </main>
 
-    <footer class="max-w-3xl mx-auto w-full text-center mt-8 text-xs text-slate-500">
-        <p>Validação de Usabilidade • Design de Interface de Aprendizagem</p>
+    <footer class="max-w-3xl mx-auto w-full text-center mt-6 text-xs text-red-300/60 font-medium">
+        <p>Validação de Layout • Protótipo Interativo em Vermelho & Preto</p>
     </footer>
 
     <script>
-        // Dados das perguntas com respostas e explicações detalhadas
+        // Dados das perguntas com respostas e explicações
         const quizData = [
             {
                 id: 1,
@@ -64,32 +107,32 @@
                 opcoes: [
                     "Centralizar e organizar diferentes tipos de materiais de estudo de uma aula.",
                     "Funcionar como uma rede social para conversar com outros alunos.",
-                    "Realizar o pagamento de mensalidades e mensalidades de cursos."
+                    "Realizar o pagamento de mensalidades e cursos."
                 ],
                 correta: 0,
-                explicacao: "O objetivo principal é oferecer um hub organizado com todos os recursos multimídia necessários para o acompanhamento da matéria."
+                explicacao: "O objetivo principal do aplicativo é reunir e estruturar todos os materiais didáticos de uma matéria em um só local."
             },
             {
                 id: 2,
                 pergunta: "Quais tipos de formatos de mídia o aplicativo permite visualizar na lista?",
                 opcoes: [
                     "PDFs, vídeos, fotos de lousa e anotações pessoais.",
-                    "Apenas arquivos de áudio e podcasts curtos.",
-                    "Somente transmissões ao vivo de professores da instituição."
+                    "Apenas arquivos de áudio e podcasts.",
+                    "Somente transmissões ao vivo de professores."
                 ],
                 correta: 0,
-                explicacao: "O aplicativo oferece suporte multimídia completo para atender a diferentes estilos de aprendizado."
+                explicacao: "O protótipo dá suporte a múltiplos formatos de mídia para oferecer flexibilidade nos estudos."
             },
             {
                 id: 3,
                 pergunta: "Como o usuário pode encontrar rapidamente um arquivo específico dentro de um tema de estudo?",
                 opcoes: [
                     "Usando a barra de pesquisa ou filtrando pelos botões de categoria de mídia.",
-                    "Excluindo os outros materiais até sobrar o arquivo desejado na tela.",
-                    "Reiniciando o aplicativo para recarregar a ordem da lista."
+                    "Excluindo os outros materiais até sobrar o arquivo desejado.",
+                    "Reiniciando o aplicativo para recarregar a lista."
                 ],
                 correta: 0,
-                explicacao: "Filtros rápidos por tipo e a barra de busca textual garantem agilidade na localização de materiais."
+                explicacao: "Filtros visuais por categoria e a barra de busca aceleram a localização dos conteúdos."
             },
             {
                 id: 4,
@@ -97,21 +140,21 @@
                 opcoes: [
                     "A quantidade de materiais daquele tópico que o aluno já revisou.",
                     "O limite de espaço de armazenamento disponível no celular.",
-                    "A velocidade atual da conexão de internet."
+                    "A velocidade da conexão de internet."
                 ],
                 correta: 0,
-                explicacao: "O indicador ajuda o aluno a acompanhar visualmente o quanto já estudou do conteúdo programado."
+                explicacao: "A barra de progresso mensura a porcentagem de itens revisados pelo estudante naquele tópico."
             },
             {
                 id: 5,
                 pergunta: "Para que serve a opção de alternar visualização ao lado da barra de busca?",
                 opcoes: [
                     "Alternar entre o modo de exibição em lista ou em grade/mosaico.",
-                    "Ativar ou desativar o som dos vídeos contidos na lista.",
-                    "Mudar o idioma padrão de navegação do aplicativo."
+                    "Ativar ou desativar o som dos vídeos da lista.",
+                    "Mudar o idioma do aplicativo."
                 ],
                 correta: 0,
-                explicacao: "Permite adaptar a visualização entre lista compacta ou grade visual, conforme a preferência do usuário."
+                explicacao: "O botão de alternância permite personalizar a disposição visual entre cards em lista ou em mosaico."
             }
         ];
 
@@ -122,29 +165,32 @@
         function loadQuestion() {
             const quizContent = document.getElementById('quiz-content');
             const progressBar = document.getElementById('progress-bar');
+            const tracker = document.getElementById('question-tracker');
+            const progressPercent = document.getElementById('progress-percent');
             const item = quizData[currentQuestion];
 
-            // Atualizar barra de progresso
-            const progressPercentage = ((currentQuestion) / quizData.length) * 100;
-            progressBar.style.width = `${progressPercentage}%`;
+            // Atualiza marcadores e barra de progresso
+            const percentage = Math.round(((currentQuestion) / quizData.length) * 100);
+            progressBar.style.width = `${percentage}%`;
+            tracker.innerText = `PERGUNTA ${currentQuestion + 1} DE ${quizData.length}`;
+            progressPercent.innerText = `${percentage}%`;
 
             let html = `
-                <div class="flex items-center justify-between text-xs text-indigo-400 font-medium mb-2">
-                    <span>PERGUNTA ${currentQuestion + 1} DE ${quizData.length}</span>
-                </div>
-                <h2 class="text-xl md:text-2xl font-bold text-white mb-6 leading-snug">
+                <h2 class="text-xl md:text-2xl font-black text-white mb-6 leading-snug tracking-tight">
                     ${item.pergunta}
                 </h2>
-                <div class="space-y-3">
+                <div class="space-y-3.5">
             `;
 
             item.opcoes.forEach((opcao, index) => {
+                const letter = String.fromCharCode(65 + index);
                 html += `
-                    <button onclick="selectOption(${index})" class="option-card w-full text-left p-4 rounded-xl bg-slate-700/40 hover:bg-slate-700 border border-slate-600/50 hover:border-indigo-500/50 text-slate-200 text-sm md:text-base flex items-start gap-3 group">
-                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-800 text-slate-400 text-xs font-bold group-hover:bg-indigo-600 group-hover:text-white transition-colors shrink-0 mt-0.5">
-                            ${String.fromCharCode(65 + index)}
+                    <button onclick="selectOption(${index})" class="option-card w-full text-left p-4 md:p-5 rounded-2xl bg-gradient-to-r from-zinc-950 via-red-950/50 to-zinc-950 border-2 border-red-900/60 hover:border-red-500 text-white font-medium text-sm md:text-base flex items-center gap-4 group cursor-pointer relative overflow-hidden">
+                        <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-red-900 text-white font-black text-sm group-hover:from-red-500 group-hover:to-red-700 transition-all border border-red-400/50 shadow-[0_0_10px_rgba(239,68,68,0.4)] shrink-0">
+                            ${letter}
                         </span>
-                        <span class="flex-grow">${opcao}</span>
+                        <span class="flex-grow text-zinc-100 group-hover:text-white">${opcao}</span>
+                        <div class="w-3 h-3 rounded-full border-2 border-red-600 group-hover:bg-red-500 group-hover:shadow-[0_0_8px_rgba(239,68,68,0.8)] transition-all shrink-0"></div>
                     </button>
                 `;
             });
@@ -182,52 +228,59 @@
         function showResults() {
             const quizContent = document.getElementById('quiz-content');
             const progressBar = document.getElementById('progress-bar');
+            const tracker = document.getElementById('question-tracker');
+            const progressPercent = document.getElementById('progress-percent');
             
-            // Preencher progresso completo
             progressBar.style.width = '100%';
+            tracker.innerText = 'CONCLUÍDO';
+            progressPercent.innerText = '100%';
 
             const percentage = Math.round((score / quizData.length) * 100);
             
             let message = "";
-            let colorClass = "";
             if (percentage >= 80) {
-                message = "Excelente! Você compreendeu perfeitamente o protótipo.";
-                colorClass = "text-emerald-400";
+                message = "Excelente! Você compreendeu perfeitamente o protótipo!";
             } else if (percentage >= 60) {
-                message = "Bom trabalho! Teve um bom entendimento da interface.";
-                colorClass = "text-amber-400";
+                message = "Muito bom! Teve bom entendimento dos recursos.";
             } else {
-                message = "Vale a pena revisar o protótipo para esclarecer alguns pontos.";
-                colorClass = "text-rose-400";
+                message = "Vale a pena revisar novamente a tela do protótipo.";
             }
 
             let html = `
-                <div class="text-center py-4">
-                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-700/60 border border-slate-600 mb-4">
-                        <span class="text-3xl font-extrabold ${colorClass}">${percentage}%</span>
+                <div class="text-center py-2">
+                    <!-- Medalha/Pontuação Vermelha -->
+                    <div class="inline-flex items-center justify-center w-28 h-28 rounded-full bg-gradient-to-br from-red-600 via-red-800 to-black border-4 border-red-500 mb-4 shadow-[0_0_30px_rgba(239,68,68,0.6)]">
+                        <span class="text-4xl font-black text-white drop-shadow-md">${percentage}%</span>
                     </div>
-                    <h2 class="text-2xl font-bold text-white mb-1">Resultado Final</h2>
-                    <p class="${colorClass} text-sm font-semibold mb-2">${message}</p>
-                    <p class="text-slate-400 text-xs mb-6">Você acertou ${score} de ${quizData.length} perguntas.</p>
+                    
+                    <h2 class="text-2xl md:text-3xl font-black text-white mb-1">Resultado Final</h2>
+                    <p class="text-red-400 text-sm font-bold mb-1">${message}</p>
+                    <p class="text-zinc-300 text-xs mb-6">Você acertou <span class="text-red-400 font-extrabold text-sm">${score}</span> de ${quizData.length} perguntas.</p>
 
-                    <div class="border-t border-slate-700 pt-6 text-left space-y-4 max-h-[320px] overflow-y-auto pr-1">
-                        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Revisão das Respostas</h3>
+                    <div class="border-t-2 border-red-900/60 pt-6 text-left space-y-4 max-h-[320px] overflow-y-auto pr-2">
+                        <h3 class="text-xs font-black uppercase tracking-widest text-red-400 mb-3 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                            Gabarito Detalhado
+                        </h3>
             `;
 
             userAnswers.forEach((ans, idx) => {
                 html += `
-                    <div class="p-4 rounded-xl ${ans.isCorrect ? 'bg-emerald-950/30 border border-emerald-500/30' : 'bg-rose-950/30 border border-rose-500/30'} text-xs">
-                        <p class="font-bold text-slate-200 mb-1">${idx + 1}. ${ans.question}</p>
-                        <p class="mb-1 ${ans.isCorrect ? 'text-emerald-400' : 'text-rose-400'}">
-                            <strong>Sua resposta:</strong> ${ans.options[ans.selectedOption]}
+                    <div class="p-4 rounded-2xl ${ans.isCorrect ? 'bg-zinc-950 border-2 border-red-600/80' : 'bg-red-950/40 border-2 border-red-700'} text-xs relative overflow-hidden">
+                        <p class="font-extrabold text-white text-sm mb-2">${idx + 1}. ${ans.question}</p>
+                        
+                        <p class="mb-1 ${ans.isCorrect ? 'text-red-300 font-bold' : 'text-red-400 font-bold'}">
+                            <span>Sua resposta:</span> ${ans.options[ans.selectedOption]}
                         </p>
+                        
                         ${!ans.isCorrect ? `
-                            <p class="text-emerald-400 mb-1">
-                                <strong>Resposta correta:</strong> ${ans.options[ans.correctOption]}
+                            <p class="text-red-200 font-bold mb-1">
+                                <span>Resposta correta:</span> ${ans.options[ans.correctOption]}
                             </p>
                         ` : ''}
-                        <p class="text-slate-400 mt-2 text-[11px] italic bg-slate-900/40 p-2 rounded border border-slate-800">
-                            💡 ${ans.explanation}
+
+                        <p class="text-zinc-300 mt-2.5 text-[11px] bg-black/80 p-3 rounded-xl border border-red-900/60 leading-relaxed">
+                            💡 <strong>Explicação:</strong> ${ans.explanation}
                         </p>
                     </div>
                 `;
@@ -236,8 +289,8 @@
             html += `
                     </div>
 
-                    <button onclick="restartQuiz()" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-indigo-600/30 text-sm">
-                        Refazer Quiz
+                    <button onclick="restartQuiz()" class="mt-6 w-full bg-gradient-to-r from-red-700 via-red-600 to-red-700 hover:from-red-600 hover:to-red-500 text-white font-black py-4 px-6 rounded-2xl transition-all red-glow-button text-sm tracking-wider uppercase cursor-pointer border border-red-400/50">
+                        Refazer Teste
                     </button>
                 </div>
             `;
@@ -252,6 +305,7 @@
             loadQuestion();
         }
 
+        // Inicializa o quiz na primeira pergunta
         window.onload = function() {
             loadQuestion();
         };
